@@ -1,32 +1,34 @@
-argparser v0.0.1
+argparser v${version}
 ==================
-[Node.js] parse commandline-args and options
+[Node.js] ${description}
 
-Change Log
+${changelog}
 
 ----------------
-* [0.0.1]: Release
+<< for (var i in changeLogs) { >>
+* [${i}]: ${changeLogs[i]}
+<< } >>
 
-Overview
+${overview}
 ----------------
-### Installation ###
+### ${install} ###
     git clone git://github.com/shinout/argparser.git
 
-    OR
+    ${_OR}
 
     npm install argparser
 
-### Usage ###
+### ${usage} ###
     const ArgParser = require('argparser');
 
-    /* the simplest use */
+    /* ${simplest_use} */
     /* node hoge.js --long-var -s foo bar  */
     var parser = new ArgParser().parse();
     parser.getArgs(); // [foo, var]
     parser.getOptions(); // {long-var: true, s: true}
 
 
-    /* set options with value */
+    /* ${with_value} */
     /* node hoge.js piyo foo -h --var-with-val 392 bar  */
     var parser = new ArgParser();
     parser.addValueOptions(['var-with-val']);
@@ -35,7 +37,7 @@ Overview
     parser.getOptions(); // {h: true, var-with-val: 392}
 
 
-    /* parse array */
+    /* ${parse_array} */
     var parser = new ArgParser();
     parser.addValueOptions(['encoding', 'm', 'aaa']);
     parser.parse(['-m', 110, '--encoding', 'utf-8', 'index.html']);
@@ -43,9 +45,10 @@ Overview
     parser.getOptions(); // {encoding: utf-8, m: 100, aaa: false}
 
 
-    /* set non-value options */
+    /* ${non_val} */
     parser.addOptions(['-h', '-t']);
     parser.addValueOptions(['encoding', 'm']);
     parser.parse(['-h', 'hoge', '--encoding', 'utf-8', 'index.html']);
     parser.getArgs(); // [hoge, index.html]
     parser.getOptions(); // {h: true, encoding: true, m: false}
+

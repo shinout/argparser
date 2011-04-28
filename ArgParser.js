@@ -97,5 +97,7 @@ ArgParser.prototype.parse = function(arr) {
   });
 }
 
+/* version */
+ArgParser.version = '0.0.1';
 
 module.exports = ArgParser;

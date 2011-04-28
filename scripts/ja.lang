@@ -1,0 +1,18 @@
+{ changeLogs        :
+    { "0.0.1" :   "リリース"
+    }
+
+, changelog         : '変更履歴'
+, _OR               : 'または'
+, description       : 'コマンドライン引数、オプション解析'
+, install           : 'インストール方法'
+, overview          : '概要'
+, usage             : '使い方'
+
+
+
+, simplest_use      : 'シンプルな使い方'
+, with_value        : '引数つきオプションを指定'
+, parse_array       : '配列を与えて解析'
+, non_val           : '引数なしオプションを指定'
+}

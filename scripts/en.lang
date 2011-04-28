@@ -1,0 +1,18 @@
+{ changeLogs        :
+    { "0.0.1" :   "Release"
+    }
+
+, changelog         : 'Change Log'
+, _OR               : 'OR'
+, description       : 'parse commandline-args and options'
+, install           : 'Installation'
+, overview          : 'Overview'
+, usage             : 'Usage'
+
+
+
+, simplest_use      : 'the simplest use'
+, with_value        : 'set options with value'
+, parse_array       : 'parse array'
+, non_val           : 'set non-value options'
+}
