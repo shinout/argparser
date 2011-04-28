@@ -24,12 +24,14 @@ ArgParser.prototype.addValueOptions = function(arr) {
   arr.forEach(function(opt) {
     this.valopts[(opt.length == 1) ? 's' : 'l'].push(opt);
   }, this);
+  return this;
 }
 
 ArgParser.prototype.addOptions = function(arr) {
   arr.forEach(function(opt) {
     this.opts[(opt.length == 1) ? 's' : 'l'].push(opt);
   }, this);
+  return this;
 }
 
 ArgParser.prototype.parse = function(arr) {
@@ -103,9 +105,10 @@ ArgParser.prototype.parse = function(arr) {
     /* arguments */
     that.args.push(val);
   });
+  return this;
 }
 
 /* version */
-ArgParser.version = '0.0.2';
+ArgParser.version = '0.0.3';
 
 module.exports = ArgParser;
