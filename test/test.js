@@ -1,0 +1,55 @@
+const ArgParser= require('../ArgParser');
+const test = require('./shinout.test');
+
+var parser = new ArgParser();
+parser.addValueOptions(['m', 'set-hoge']);
+parser.addOptions(['h', 'non-val']);
+parser.parse(['-h', 'aa', 'hoge', 'fuga']);
+var options = parser.getOptions();
+var args = parser.getArgs();
+
+test('equal', options.h, true, 'invalid : options.h');
+test('equal', options['non-val'], false, 'invalid : options[non-val]');
+test('equal', options['non-option'], null, 'invalid : options[non-option]');
+test('equal', args[0], 'aa', 'invalid : args[0]');
+test('equal', args[1], 'hoge', 'invalid : args[1]');
+test('equal', args[2], 'fuga', 'invalid : args[2]');
+test('result', 'simple option test');
+
+
+
+parser.parse(['--set-hoge', 'foo', 'bar', '-m', '23', '-h']);
+var options = parser.getOptions();
+var args = parser.getArgs();
+console.log(options);
+test('equal', options.h, true, 'invalid : options.h');
+test('equal', options.m, '23', 'invalid : options.m');
+test('equal', options['set-hoge'], 'foo', 'invalid : options[set-hoge]');
+test('equal', args[0], 'bar', 'invalid : args[0]');
+test('result', 'option with val test');
+
+
+parser.parse(['--not-option', 'foo', 'bar', '-h']);
+var options = parser.getOptions();
+var args = parser.getArgs();
+test('equal', options.h, true, 'invalid : options.h');
+test('equal', options['not-option'], true, 'invalid : options[not-option]');
+test('equal', args[0], 'foo', 'invalid : args[0]');
+test('equal', args[1], 'bar', 'invalid : args[1]');
+test('equal', parser.getInvalids()[0], 'not-option');
+test('result', 'invalid option test');
+
+
+
+parser.parse(['-this-is-not-option', 'foo', 'bar', '-h']);
+var options = parser.getOptions();
+var args = parser.getArgs();
+test('equal', options.h, true, 'invalid : options.h');
+test('equal', options['this-is-not-option'], null, 'invalid : options[this-is-not-option]');
+test('equal', args[0], '-this-is-not-option', 'invalid : args[0]');
+test('equal', args[1], 'foo', 'invalid : args[1]');
+test('equal', args[2], 'bar', 'invalid : args[2]');
+test('result', '-long-name test');
+
+parser.parse();
+console.log(parser);
