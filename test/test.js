@@ -62,4 +62,6 @@ test('equal', args[2], 'bar', 'invalid : args[2]');
 test('result', '-long-name test');
 
 parser.parse();
-console.log(parser);
+test('ok', process.argv[0], 'process.argv[0] is deleted');
+test('ok', process.argv[1], 'process.argv[1] is deleted');
+test('result', 'argv test');

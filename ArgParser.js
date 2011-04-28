@@ -36,14 +36,17 @@ ArgParser.prototype.addOptions = function(arr) {
 
 ArgParser.prototype.parse = function(arr) {
   /* clear past data */
-  this.options = {};
-  this.args    = [];
-  this.invalid = [];
+  this.options  = {};
+  this.args     = [];
+  this.invalids = [];
 
   /* check arguments */
-  if (! (arr instanceof Array)) arr = process.argv;
-  if (arr[0] === process.argv[0]) arr.shift();
-  if (arr[1] === process.argv[1]) arr.shift();
+  if (! (arr instanceof Array)) {
+    arr = [];
+    process.argv.forEach(function(v, k) {
+      if (k >= 2) arr.push(v);
+    });
+  }
 
   /* set default values */
   var that = this; // for shortcut access to this
@@ -109,6 +112,6 @@ ArgParser.prototype.parse = function(arr) {
 }
 
 /* version */
-ArgParser.version = '0.0.3';
+ArgParser.version = '0.0.4';
 
 module.exports = ArgParser;
