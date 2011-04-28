@@ -1,4 +1,4 @@
-argparser v0.0.1
+argparser v0.0.2
 ==================
 [Node.js] parse commandline-args and options
 
@@ -6,6 +6,7 @@ Change Log
 
 ----------------
 * [0.0.1]: Release
+* [0.0.2]: modify getter methods
 
 Overview
 ----------------

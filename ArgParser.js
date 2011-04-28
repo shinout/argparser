@@ -7,9 +7,17 @@ function ArgParser() {
 }
 
 /* getters ( in future, these will be deprecated... ) */
-ArgParser.prototype.getOptions  = function() { return this.options; }
-ArgParser.prototype.getArgs     = function() { return this.args; }
-ArgParser.prototype.getInvalids = function() { return this.invalids; }
+ArgParser.prototype.getOptions  = function(k) { 
+  return (k == null) ? this.options : this.options[k];
+}
+
+ArgParser.prototype.getArgs     = function(n) {
+  return (n == null) ? this.args: this.args[n];
+}
+
+ArgParser.prototype.getInvalids = function(n) {
+  return (n == null) ? this.invalids : this.invalids[n];
+}
 
 
 ArgParser.prototype.addValueOptions = function(arr) {
@@ -98,6 +106,6 @@ ArgParser.prototype.parse = function(arr) {
 }
 
 /* version */
-ArgParser.version = '0.0.1';
+ArgParser.version = '0.0.2';
 
 module.exports = ArgParser;

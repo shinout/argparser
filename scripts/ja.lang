@@ -1,5 +1,6 @@
 { changeLogs        :
     { "0.0.1" :   "リリース"
+    , "0.0.2" :   "getterメソッドを改良"
     }
 
 , changelog         : '変更履歴'

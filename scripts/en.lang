@@ -1,5 +1,6 @@
 { changeLogs        :
     { "0.0.1" :   "Release"
+    , "0.0.2" :   "modify getter methods"
     }
 
 , changelog         : 'Change Log'

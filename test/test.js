@@ -9,11 +9,19 @@ var options = parser.getOptions();
 var args = parser.getArgs();
 
 test('equal', options.h, true, 'invalid : options.h');
-test('equal', options['non-val'], false, 'invalid : options[non-val]');
-test('equal', options['non-option'], null, 'invalid : options[non-option]');
+test('deepEqual', options['non-val'], false, 'invalid : options[non-val]');
+test('deepEqual', options['non-option'], undefined, 'invalid : options[non-option]');
 test('equal', args[0], 'aa', 'invalid : args[0]');
 test('equal', args[1], 'hoge', 'invalid : args[1]');
 test('equal', args[2], 'fuga', 'invalid : args[2]');
+
+test('equal', parser.getOptions('h'), true, 'invalid : getOptions(h)');
+test('deepEqual', parser.getOptions('non-val'), false, 'invalid : getOptions(non-val)');
+test('deepEqual', parser.getOptions('non-option'), undefined, 'invalid : getOptions(non-option)');
+
+test('equal', parser.getArgs(0), 'aa', 'invalid : getArgs(0)');
+test('equal', parser.getArgs(1), 'hoge', 'invalid : getArgs(1)');
+test('equal', parser.getArgs(2), 'fuga', 'invalid : getArgs(2)');
 test('result', 'simple option test');
 
 
@@ -37,6 +45,8 @@ test('equal', options['not-option'], true, 'invalid : options[not-option]');
 test('equal', args[0], 'foo', 'invalid : args[0]');
 test('equal', args[1], 'bar', 'invalid : args[1]');
 test('equal', parser.getInvalids()[0], 'not-option');
+
+test('equal', parser.getInvalids(0), 'not-option', 'invalid : getInvalids(0)');
 test('result', 'invalid option test');
 
 
