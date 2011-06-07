@@ -1,4 +1,4 @@
-argparser v0.0.4
+argparser v0.0.5
 ==================
 [Node.js] parse commandline-args and options
 

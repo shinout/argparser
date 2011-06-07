@@ -15,6 +15,25 @@ ArgParser.prototype.getArgs     = function(n) {
   return (n == null) ? this.args: this.args[n];
 }
 
+ArgParser.prototype.stringifyOptions = function() {
+  var that = this;
+  return ['opts', 'valopts'].map(function(opts) {
+    return Object.keys(that[opts]).map(function(sl) {
+      return that[opts][sl]
+      .filter(function(k) {
+        return (that.options[k] !== false);
+      })
+      .map(function(k) {
+        return (( (sl == 's') ? '-'+k : '--'+k ) + ( (opts == 'opts') ? '' : (' ' + that.options[k]))).replace(/ +$/, '');
+      }).join(' ');
+    }).join(' ').replace(/ +$/, '');
+  }).join(' ').replace(/ +$/, '');
+}
+
+ArgParser.prototype.stringify = function() {
+  return this.stringifyOptions() + ' ' + this.args.join(' ');
+}
+
 ArgParser.prototype.getInvalids = function(n) {
   return (n == null) ? this.invalids : this.invalids[n];
 }
@@ -112,6 +131,6 @@ ArgParser.prototype.parse = function(arr) {
 }
 
 /* version */
-ArgParser.version = '0.0.4';
+ArgParser.version = '0.0.5';
 
 module.exports = ArgParser;

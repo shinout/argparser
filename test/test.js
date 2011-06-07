@@ -25,11 +25,9 @@ test('equal', parser.getArgs(2), 'fuga', 'invalid : getArgs(2)');
 test('result', 'simple option test');
 
 
-
 parser.parse(['--set-hoge', 'foo', 'bar', '-m', '23', '-h']);
 var options = parser.getOptions();
 var args = parser.getArgs();
-console.log(options);
 test('equal', options.h, true, 'invalid : options.h');
 test('equal', options.m, '23', 'invalid : options.m');
 test('equal', options['set-hoge'], 'foo', 'invalid : options[set-hoge]');
@@ -60,6 +58,7 @@ test('equal', args[0], '-this-is-not-option', 'invalid : args[0]');
 test('equal', args[1], 'foo', 'invalid : args[1]');
 test('equal', args[2], 'bar', 'invalid : args[2]');
 test('result', '-long-name test');
+
 
 parser.parse();
 test('ok', process.argv[0], 'process.argv[0] is deleted');
