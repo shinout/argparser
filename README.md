@@ -1,4 +1,4 @@
-argparser v0.0.6
+argparser v0.0.7
 ==================
 [Node.js] parse commandline-args and options
 
@@ -10,7 +10,7 @@ Change Log
 * [0.0.3]: enable method chaining
 * [0.0.4]: copy process.argv
 * [0.0.5]: get string expression of command with stringify()
-* [0.0.6]: get option string from hash data with ArgParser.getOptionString(obj)
+* [0.0.6]: exclude null or false in ArgParser.getOptionString(obj)
 
 Overview
 ----------------

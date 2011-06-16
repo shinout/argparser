@@ -133,13 +133,13 @@ ArgParser.prototype.parse = function(arr) {
 ArgParser.getOptionString = function(obj) { 
   var ret = [];
   Object.keys(obj).forEach(function(opt) {
+    if (obj[opt] === null || obj[opt] === false) return;
     ret.push( ((opt.length == 1) ? '-' : '--') + opt + ' ' + obj[opt]);
-
   });
   return ret.join(' ');
 };
 
 /* version */
-ArgParser.version = '0.0.6';
+ArgParser.version = '0.0.7';
 
 module.exports = ArgParser;

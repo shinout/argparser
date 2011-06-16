@@ -67,6 +67,6 @@ test('result', 'argv test');
 
 
 // getOptionString
-var opts = {s: "shortval", looong: "longval", innt: 1, floaat: 0.222};
+var opts = {s: "shortval", looong: "longval", innt: 1, nullval: null, floaat: 0.222, falseval: false};
 test('equal', ArgParser.getOptionString(opts), '-s shortval --looong longval --innt 1 --floaat 0.222');
 test('result', 'getOptionString test');

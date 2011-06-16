@@ -1,4 +1,4 @@
-argparser v0.0.6
+argparser v0.0.7
 ==================
 [Node.js] コマンドライン引数、オプション解析
 
@@ -11,6 +11,7 @@ argparser v0.0.6
 * [0.0.4]: process.argvのreferenceでなくcopyを利用するようにした
 * [0.0.5]: stringify()でコマンドの文字列に戻す作業
 * [0.0.6]: ArgParser.getOptionString(obj) でハッシュからオプション文字列を取得
+* [0.0.7]: ArgParser.getOptionString(obj)でnullとfalseの場合はオプションに含めないようにした
 
 概要
 ----------------
