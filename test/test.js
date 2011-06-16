@@ -64,3 +64,9 @@ parser.parse();
 test('ok', process.argv[0], 'process.argv[0] is deleted');
 test('ok', process.argv[1], 'process.argv[1] is deleted');
 test('result', 'argv test');
+
+
+// getOptionString
+var opts = {s: "shortval", looong: "longval", innt: 1, floaat: 0.222};
+test('equal', ArgParser.getOptionString(opts), '-s shortval --looong longval --innt 1 --floaat 0.222');
+test('result', 'getOptionString test');
