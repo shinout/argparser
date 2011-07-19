@@ -26,6 +26,7 @@ ${overview}
     var parser = new ArgParser().parse();
     parser.getArgs(); // [foo, var]
     parser.getOptions(); // {long-var: true, s: true}
+    parser.getOptions('long-var'); // true
 
 
     /* ${with_value} */
@@ -47,8 +48,12 @@ ${overview}
 
     /* ${non_val} */
     parser.addOptions(['-h', '-t']);
-    parser.addValueOptions(['encoding', 'm']);
+    parser.addValueOptions(['encoding', 'e', 'm']);
     parser.parse(['-h', 'hoge', '--encoding', 'utf-8', 'index.html']);
     parser.getArgs(); // [hoge, index.html]
-    parser.getOptions(); // {h: true, encoding: true, m: false}
+    parser.getOptions(); // {h: true, encoding: utf-8, m: false}
+    parser.getOptions('e'); // false
+    parser.getOptions('encoding'); // utf-8
+    parser.getOptions('encoding', 'e'); // utf-8
+    parser.getOptions('e', 'encoding'); // utf-8
 

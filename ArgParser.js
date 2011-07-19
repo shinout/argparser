@@ -7,11 +7,19 @@ function ArgParser() {
 }
 
 /* getters ( in future, these will be deprecated... ) */
-ArgParser.prototype.getOptions  = function(k) { 
-  return (k == null) ? this.options : this.options[k];
+ArgParser.prototype.getOptions  = function() {
+  if (arguments.length == 0) {
+    return this.options;
+  }
+  var ret = null;
+  const that = this;
+  Array.prototype.forEach.call(arguments, function(arg) {
+    ret = ret || that.options[arg];
+  });
+  return ret;
 }
 
-ArgParser.prototype.getArgs     = function(n) {
+ArgParser.prototype.getArgs = function(n) {
   return (n == null) ? this.args: this.args[n];
 }
 
@@ -140,6 +148,6 @@ ArgParser.getOptionString = function(obj) {
 };
 
 /* version */
-ArgParser.version = '0.0.7';
+ArgParser.version = '0.0.8';
 
 module.exports = ArgParser;

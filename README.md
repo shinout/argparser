@@ -1,4 +1,4 @@
-argparser v0.0.7
+argparser v0.0.8
 ==================
 [Node.js] parse commandline-args and options
 
@@ -29,6 +29,7 @@ Overview
     var parser = new ArgParser().parse();
     parser.getArgs(); // [foo, var]
     parser.getOptions(); // {long-var: true, s: true}
+    parser.getOptions('long-var'); // true
 
 
     /* set options with value */
@@ -50,7 +51,11 @@ Overview
 
     /* set non-value options */
     parser.addOptions(['-h', '-t']);
-    parser.addValueOptions(['encoding', 'm']);
+    parser.addValueOptions(['encoding', 'e', 'm']);
     parser.parse(['-h', 'hoge', '--encoding', 'utf-8', 'index.html']);
     parser.getArgs(); // [hoge, index.html]
-    parser.getOptions(); // {h: true, encoding: true, m: false}
+    parser.getOptions(); // {h: true, encoding: utf-8, m: false}
+    parser.getOptions('e'); // false
+    parser.getOptions('encoding'); // utf-8
+    parser.getOptions('encoding', 'e'); // utf-8
+    parser.getOptions('e', 'encoding'); // utf-8
