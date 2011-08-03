@@ -4,6 +4,10 @@ function ArgParser() {
   this.options    = {}; // in future, this will be [Getter/Setter]
   this.args       = []; // in future, this will be [Getter/Setter]
   this.invalids   = []; // in future, this will be [Getter/Setter]
+  this.defaults = {
+    opts   : false,
+    valopts: false 
+  };
 }
 
 /* getters ( in future, these will be deprecated... ) */
@@ -80,7 +84,7 @@ ArgParser.prototype.parse = function(arr) {
   ['opts', 'valopts'].forEach(function(opts) {
     ['s', 'l'].forEach(function(sl) {
       that[opts][sl].forEach(function(opt) {
-        that.options[opt] = false;
+        that.options[opt] = that.defaults[opts];
       });
     });
   });
@@ -148,6 +152,6 @@ ArgParser.getOptionString = function(obj) {
 };
 
 /* version */
-ArgParser.version = '0.0.8';
+ArgParser.version = '0.0.9';
 
 module.exports = ArgParser;
