@@ -7,6 +7,7 @@
     , "0.0.6" :   "ArgParser.getOptionString(obj) でハッシュからオプション文字列を取得"
     , "0.0.7" :   "ArgParser.getOptionString(obj)でnullとfalseの場合はオプションに含めないようにした"
     , "0.0.9" :   "defaultの値をfalse固定からカスタマイズできるようにした"
+    , "0.1.0" :   "各optionのdefaultの値を設定可能に | ファイルやdirectory, 数値の指定ができるようにした"
     }
 
 , changelog         : '変更履歴'
@@ -20,6 +21,8 @@
 
 , simplest_use      : 'シンプルな使い方'
 , with_value        : '引数つきオプションを指定'
+, parse_file        : 'ファイルを引数に指定する'
+, notExist          : "file,file1,file2のいずれかが存在しなければエラーをthrow"
 , parse_array       : '配列を与えて解析'
 , non_val           : '引数なしオプションを指定'
 }

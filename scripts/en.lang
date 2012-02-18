@@ -7,6 +7,7 @@
     , "0.0.6" :   "get option string from hash data with ArgParser.getOptionString(obj)"
     , "0.0.7" :   "exclude null or false in ArgParser.getOptionString(obj)"
     , "0.0.9" :   "set default values customizable"
+    , "0.1.0" :   "default values| set files, dirs, numbers"
     }
 
 , changelog         : 'Change Log'
@@ -20,6 +21,8 @@
 
 , simplest_use      : 'the simplest use'
 , with_value        : 'set options with value'
+, parse_file        : 'set files'
+, notExist          : "if file, file1 or file2 don't exist, then throw Error"
 , parse_array       : 'parse array'
 , non_val           : 'set non-value options'
 }

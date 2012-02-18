@@ -76,3 +76,44 @@ test('result', 'argv test');
 var opts = {s: "shortval", looong: "longval", innt: 1, nullval: null, floaat: 0.222, falseval: false};
 test('equal', ArgParser.getOptionString(opts), '-s shortval --looong longval --innt 1 --floaat 0.222');
 test('result', 'getOptionString test');
+
+
+
+// file
+parser = new ArgParser().files(0, "hoge", "f");
+try {
+  parser.parse([__filename, '-f', __filename, "--hoge", "notexistfile"]);
+}
+catch (e) {
+  test('ok', e.message.match("notexistfile"));
+}
+
+test('result', 'file test');
+
+
+// dir
+parser = new ArgParser().dirs(0, "hoge", "f");
+try {
+  parser.parse([__dirname, '-f', __dirname, "--hoge", __filename]);
+}
+catch (e) {
+  test('ok', e.message.match(__filename));
+}
+
+// num
+parser = new ArgParser().nums(0, "hoge", "f");
+parser.parse(["3", '-f', "43.3", "--hoge", "-22.2"]);
+test("strictEqual", parser.getArgs(0), 3);
+test("strictEqual", parser.getOptions("f"), 43.3);
+test("strictEqual", parser.getOptions("hoge"), -22.2);
+
+test('result', 'num test');
+
+
+//default
+parser = new ArgParser().defaults({ "hoge" : 14 });
+parser.parse(["eeeee"]);
+test("strictEqual", parser.getOptions("hoge"), 14);
+parser.nums("hoge").parse(["--hoge", "13"]);
+test("strictEqual", parser.getOptions("hoge"), 13);
+test('result', 'default test');

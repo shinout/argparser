@@ -1,4 +1,4 @@
-argparser v0.0.9
+argparser v0.1.0
 ==================
 [Node.js] parse commandline-args and options
 
@@ -13,6 +13,7 @@ Change Log
 * [0.0.6]: get option string from hash data with ArgParser.getOptionString(obj)
 * [0.0.7]: exclude null or false in ArgParser.getOptionString(obj)
 * [0.0.9]: set default values customizable
+* [0.1.0]: default values| set files, dirs, numbers
 
 Overview
 ----------------
@@ -39,11 +40,16 @@ Overview
     var parser = new ArgParser();
     parser.addValueOptions(['var-with-val']);
     parser.parse();
-    parser.getArgs(); // [piyo, foo, var]
+    parser.getArgs(0); // [piyo, foo, var]
     parser.getOptions(); // {h: true, var-with-val: 392}
 
 
-    /* parse array */
+    /* set files */
+    /* node hoge.js -f opfile file1 file2 */
+    parser.files(0, 1, "f");
+    parser.parse(); // if file, file1 or file2 don't exist, then throw Error
+
+
     var parser = new ArgParser();
     parser.addValueOptions(['encoding', 'm', 'aaa']);
     parser.parse(['-m', 110, '--encoding', 'utf-8', 'index.html']);
@@ -61,3 +67,4 @@ Overview
     parser.getOptions('encoding'); // utf-8
     parser.getOptions('encoding', 'e'); // utf-8
     parser.getOptions('e', 'encoding'); // utf-8
+

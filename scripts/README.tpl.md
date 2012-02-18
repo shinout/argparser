@@ -34,11 +34,16 @@ ${overview}
     var parser = new ArgParser();
     parser.addValueOptions(['var-with-val']);
     parser.parse();
-    parser.getArgs(); // [piyo, foo, var]
+    parser.getArgs(0); // [piyo, foo, var]
     parser.getOptions(); // {h: true, var-with-val: 392}
 
 
-    /* ${parse_array} */
+    /* ${parse_file} */
+    /* node hoge.js -f opfile file1 file2 */
+    parser.files(0, 1, "f");
+    parser.parse(); // ${notExist}
+
+
     var parser = new ArgParser();
     parser.addValueOptions(['encoding', 'm', 'aaa']);
     parser.parse(['-m', 110, '--encoding', 'utf-8', 'index.html']);
@@ -56,4 +61,5 @@ ${overview}
     parser.getOptions('encoding'); // utf-8
     parser.getOptions('encoding', 'e'); // utf-8
     parser.getOptions('e', 'encoding'); // utf-8
+
 

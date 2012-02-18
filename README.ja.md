@@ -1,4 +1,4 @@
-argparser v0.0.9
+argparser v0.1.0
 ==================
 [Node.js] コマンドライン引数、オプション解析
 
@@ -13,6 +13,7 @@ argparser v0.0.9
 * [0.0.6]: ArgParser.getOptionString(obj) でハッシュからオプション文字列を取得
 * [0.0.7]: ArgParser.getOptionString(obj)でnullとfalseの場合はオプションに含めないようにした
 * [0.0.9]: defaultの値をfalse固定からカスタマイズできるようにした
+* [0.1.0]: 各optionのdefaultの値を設定可能に | ファイルやdirectory, 数値の指定ができるようにした
 
 概要
 ----------------
@@ -39,11 +40,16 @@ argparser v0.0.9
     var parser = new ArgParser();
     parser.addValueOptions(['var-with-val']);
     parser.parse();
-    parser.getArgs(); // [piyo, foo, var]
+    parser.getArgs(0); // [piyo, foo, var]
     parser.getOptions(); // {h: true, var-with-val: 392}
 
 
-    /* 配列を与えて解析 */
+    /* ファイルを引数に指定する */
+    /* node hoge.js -f opfile file1 file2 */
+    parser.files(0, 1, "f");
+    parser.parse(); // file,file1,file2のいずれかが存在しなければエラーをthrow
+
+
     var parser = new ArgParser();
     parser.addValueOptions(['encoding', 'm', 'aaa']);
     parser.parse(['-m', 110, '--encoding', 'utf-8', 'index.html']);
@@ -61,3 +67,4 @@ argparser v0.0.9
     parser.getOptions('encoding'); // utf-8
     parser.getOptions('encoding', 'e'); // utf-8
     parser.getOptions('e', 'encoding'); // utf-8
+
