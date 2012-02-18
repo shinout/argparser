@@ -114,6 +114,6 @@ test('result', 'num test');
 parser = new ArgParser().defaults({ "hoge" : 14 });
 parser.parse(["eeeee"]);
 test("strictEqual", parser.getOptions("hoge"), 14);
-parser.nums("hoge").parse(["--hoge", "13"]);
+parser.parse(["--hoge", "13"]);
 test("strictEqual", parser.getOptions("hoge"), 13);
 test('result', 'default test');

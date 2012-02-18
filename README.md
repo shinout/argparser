@@ -1,4 +1,4 @@
-argparser v0.1.0
+argparser v0.1.1
 ==================
 [Node.js] parse commandline-args and options
 
@@ -14,6 +14,7 @@ Change Log
 * [0.0.7]: exclude null or false in ArgParser.getOptionString(obj)
 * [0.0.9]: set default values customizable
 * [0.1.0]: default values| set files, dirs, numbers
+* [0.1.1]: if default value is number, the option value should be a number too
 
 Overview
 ----------------

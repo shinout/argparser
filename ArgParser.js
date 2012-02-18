@@ -84,11 +84,17 @@ ArgParser.prototype.addValueOptions = function() {
 
 
 // set defaults
-ArgParser.prototype.defaults = function(obj) {
+ArgParser.prototype.defaults = function(obj, noSetNums) {
   var keys = Object.keys(obj);
+  var nums = [];
   keys.forEach(function(k) {
-    this._defaults[k] = obj[k];
+    var val = obj[k];
+    if (typeof val == "number") nums.push(k);
+    this._defaults[k] = val;
   }, this);
+  if (!noSetNums && nums.length) {
+    this.nums(nums);
+  }
   return this.addValueOptions(keys);
 };
 
@@ -216,6 +222,6 @@ ArgParser.getOptionString = function(obj) {
 };
 
 /* version */
-ArgParser.version = '0.1.0';
+ArgParser.version = '0.1.1';
 
 module.exports = ArgParser;
