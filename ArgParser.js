@@ -12,6 +12,10 @@ function ArgParser() {
   this._nums  = [];
 }
 
+ArgParser.create = function() {
+  return new ArgParser().addValueOptions(Array.prototype.slice.call(arguments));
+};
+
 // get options ( getOptions("s") ...
 ArgParser.prototype.getOptions  = function() {
   if (arguments.length == 0) {
@@ -190,6 +194,7 @@ ArgParser.prototype.parse = function(arr) {
   this._files.forEach(function(v) {
     if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
     var f = (typeof v == "number") ? this.getArgs(v) : this.getOptions(v);
+    if (f == '-') return;
     try{if(!fs.statSync(f).isFile()){throw 1}}catch(e){throw new Error(f + ": no such file or directory (in args " + v + ')');}
   }, this);
   
@@ -211,7 +216,6 @@ ArgParser.prototype.parse = function(arr) {
   return this;
 };
 
-
 ArgParser.getOptionString = function(obj) {
   var ret = [];
   Object.keys(obj).forEach(function(opt) {
@@ -222,6 +226,6 @@ ArgParser.getOptionString = function(obj) {
 };
 
 /* version */
-ArgParser.version = '0.1.1';
+ArgParser.version = '0.1.2';
 
 module.exports = ArgParser;

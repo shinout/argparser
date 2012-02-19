@@ -1,4 +1,4 @@
-argparser v0.1.1
+argparser v0.1.2
 ==================
 [Node.js] コマンドライン引数、オプション解析
 
@@ -15,6 +15,7 @@ argparser v0.1.1
 * [0.0.9]: defaultの値をfalse固定からカスタマイズできるようにした
 * [0.1.0]: 各optionのdefaultの値を設定可能に | ファイルやdirectory, 数値の指定ができるようにした
 * [0.1.1]: default値が数値なら入力値の数値チェックをするようにした
+* [0.1.2]: ArgParser.create() <= new ArgParser()と同義. '-' というファイル名はチェックなしにした(stdin用)
 
 概要
 ----------------
