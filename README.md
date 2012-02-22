@@ -1,4 +1,4 @@
-argparser v0.1.2
+argparser v0.1.3
 ==================
 [Node.js] parse commandline-args and options
 
@@ -16,6 +16,7 @@ Change Log
 * [0.1.0]: default values| set files, dirs, numbers
 * [0.1.1]: if default value is number, the option value should be a number too
 * [0.1.2]: ArgParser.create() <- create instance. '-' is valid file name (for stdin)
+* [0.1.3]: ArgParser.create().parse() === ArgParser.parse()
 
 Overview
 ----------------

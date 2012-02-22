@@ -225,7 +225,19 @@ ArgParser.getOptionString = function(obj) {
   return ret.join(' ');
 };
 
+/**
+ * register shortcut
+ **/
+Object.keys(ArgParser.prototype).forEach(function(methodName) {
+  if (ArgParser[methodName]) return;
+  ArgParser[methodName] = function() {
+    var ap = new ArgParser();
+    ap[methodName].apply(ap, arguments);
+    return ap;
+  };
+});
+
 /* version */
-ArgParser.version = '0.1.2';
+ArgParser.version = '0.1.3';
 
 module.exports = ArgParser;

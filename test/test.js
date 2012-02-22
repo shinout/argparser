@@ -117,3 +117,9 @@ test("strictEqual", parser.getOptions("hoge"), 14);
 parser.parse(["--hoge", "13"]);
 test("strictEqual", parser.getOptions("hoge"), 13);
 test('result', 'default test');
+
+
+// ap shortcut creating
+var parsed = ArgParser.parse(['ageage']);
+test("strictEqual", parsed.getArgs(0), "ageage");
+test('result', 'shortcut test');

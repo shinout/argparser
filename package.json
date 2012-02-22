@@ -1,6 +1,6 @@
 {
   "name": "argparser"
-, "version": "0.1.2"
+, "version": "0.1.3"
 , "description": "object to parse commandline-args and options."
 , "keywords": ["getopt", "arguments", "option", "getopts", "command"]
 , "author": "SHIN Suzuki <shinout310@gmail.com>"
