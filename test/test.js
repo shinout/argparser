@@ -1,12 +1,12 @@
 const ArgParser= require('../ArgParser');
 const test = require('./shinout.test');
 
-var parser = new ArgParser();
-parser.addValueOptions(['m', 'mmm', 'set-hoge']);
-parser.addOptions(['h', 'hhh', 'non-val']);
+var parser = ArgParser.create();
+parser.vals(['m', 'mmm', 'set-hoge']);
+parser.nonvals(['h', 'hhh', 'non-val']);
 parser.parse(['-h', 'aa', 'hoge', 'fuga', '--mmm', 'piyo']);
-var options = parser.getOptions();
-var args = parser.getArgs();
+var options = parser.opt();
+var args = parser.arg();
 
 test('equal', options.h, true, 'invalid : options.h');
 test('deepEqual', options['non-val'], false, 'invalid : options[non-val]');
@@ -15,26 +15,26 @@ test('equal', args[0], 'aa', 'invalid : args[0]');
 test('equal', args[1], 'hoge', 'invalid : args[1]');
 test('equal', args[2], 'fuga', 'invalid : args[2]');
 
-test('equal', parser.getOptions('hhh'), false, 'invalid : getOptions(hhh)');
-test('equal', parser.getOptions('h'), true, 'invalid : getOptions(h)');
-test('equal', parser.getOptions('h', 'hhh'), true, 'invalid : getOptions(h, hhh)');
-test('equal', parser.getOptions('hhh', 'h'), true, 'invalid : getOptions(hhh, h)');
-test('deepEqual', parser.getOptions('non-val'), false, 'invalid : getOptions(non-val)');
-test('deepEqual', parser.getOptions('non-option'), undefined, 'invalid : getOptions(non-option)');
-test('deepEqual', parser.getOptions('mmm'), 'piyo', 'invalid : getOptions(mmm)');
-test('deepEqual', parser.getOptions('m'), false, 'invalid : getOptions(m)');
-test('deepEqual', parser.getOptions('m', 'mmm'), 'piyo', 'invalid : getOptions(m, mmm)');
-test('deepEqual', parser.getOptions('mmm', 'm'), 'piyo', 'invalid : getOptions(mmm, m)');
+test('equal', parser.opt('hhh'), false, 'invalid : opt(hhh)');
+test('equal', parser.opt('h'), true, 'invalid : opt(h)');
+test('equal', parser.opt('h', 'hhh'), true, 'invalid : opt(h, hhh)');
+test('equal', parser.opt('hhh', 'h'), true, 'invalid : opt(hhh, h)');
+test('deepEqual', parser.opt('non-val'), false, 'invalid : opt(non-val)');
+test('deepEqual', parser.opt('non-option'), undefined, 'invalid : opt(non-option)');
+test('deepEqual', parser.opt('mmm'), 'piyo', 'invalid : opt(mmm)');
+test('deepEqual', parser.opt('m'), false, 'invalid : opt(m)');
+test('deepEqual', parser.opt('m', 'mmm'), 'piyo', 'invalid : opt(m, mmm)');
+test('deepEqual', parser.opt('mmm', 'm'), 'piyo', 'invalid : opt(mmm, m)');
 
-test('equal', parser.getArgs(0), 'aa', 'invalid : getArgs(0)');
-test('equal', parser.getArgs(1), 'hoge', 'invalid : getArgs(1)');
-test('equal', parser.getArgs(2), 'fuga', 'invalid : getArgs(2)');
+test('equal', parser.arg(0), 'aa', 'invalid : arg(0)');
+test('equal', parser.arg(1), 'hoge', 'invalid : arg(1)');
+test('equal', parser.arg(2), 'fuga', 'invalid : arg(2)');
 test('result', 'simple option test');
 
 
 parser.parse(['--set-hoge', 'foo', 'bar', '-m', '23', '-h']);
-var options = parser.getOptions();
-var args = parser.getArgs();
+var options = parser.opt();
+var args = parser.arg();
 test('equal', options.h, true, 'invalid : options.h');
 test('equal', options.m, '23', 'invalid : options.m');
 test('equal', options['set-hoge'], 'foo', 'invalid : options[set-hoge]');
@@ -43,8 +43,8 @@ test('result', 'option with val test');
 
 
 parser.parse(['--not-option', 'foo', 'bar', '-h']);
-var options = parser.getOptions();
-var args = parser.getArgs();
+var options = parser.opt();
+var args = parser.arg();
 test('equal', options.h, true, 'invalid : options.h');
 test('equal', options['not-option'], true, 'invalid : options[not-option]');
 test('equal', args[0], 'foo', 'invalid : args[0]');
@@ -57,8 +57,8 @@ test('result', 'invalid option test');
 
 
 parser.parse(['-this-is-not-option', 'foo', 'bar', '-h']);
-var options = parser.getOptions();
-var args = parser.getArgs();
+var options = parser.opt();
+var args = parser.arg();
 test('equal', options.h, true, 'invalid : options.h');
 test('equal', options['this-is-not-option'], null, 'invalid : options[this-is-not-option]');
 test('equal', args[0], '-this-is-not-option', 'invalid : args[0]');
@@ -80,7 +80,7 @@ test('result', 'getOptionString test');
 
 
 // file
-parser = new ArgParser().files(0, "hoge", "f");
+parser = ArgParser.create().files(0, "hoge", "f");
 try {
   parser.parse([__filename, '-f', __filename, "--hoge", "notexistfile"]);
 }
@@ -92,7 +92,7 @@ test('result', 'file test');
 
 
 // dir
-parser = new ArgParser().dirs(0, "hoge", "f");
+parser = ArgParser.dirs(0, "hoge", "f");
 try {
   parser.parse([__dirname, '-f', __dirname, "--hoge", __filename]);
 }
@@ -101,25 +101,25 @@ catch (e) {
 }
 
 // num
-parser = new ArgParser().nums(0, "hoge", "f");
+parser = ArgParser.nums(0, "hoge", "f");
 parser.parse(["3", '-f', "43.3", "--hoge", "-22.2"]);
-test("strictEqual", parser.getArgs(0), 3);
-test("strictEqual", parser.getOptions("f"), 43.3);
-test("strictEqual", parser.getOptions("hoge"), -22.2);
+test("strictEqual", parser.arg(0), 3);
+test("strictEqual", parser.opt("f"), 43.3);
+test("strictEqual", parser.opt("hoge"), -22.2);
 
 test('result', 'num test');
 
 
 //default
-parser = new ArgParser().defaults({ "hoge" : 14 });
+parser = ArgParser.defaults({ "hoge" : 14 });
 parser.parse(["eeeee"]);
-test("strictEqual", parser.getOptions("hoge"), 14);
+test("strictEqual", parser.opt("hoge"), 14);
 parser.parse(["--hoge", "13"]);
-test("strictEqual", parser.getOptions("hoge"), 13);
+test("strictEqual", parser.opt("hoge"), 13);
 test('result', 'default test');
 
 
 // ap shortcut creating
 var parsed = ArgParser.parse(['ageage']);
-test("strictEqual", parsed.getArgs(0), "ageage");
+test("strictEqual", parsed.arg(0), "ageage");
 test('result', 'shortcut test');

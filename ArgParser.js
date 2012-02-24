@@ -1,9 +1,9 @@
 function ArgParser() {
-  this.valopts    = {s: [], l: []};
-  this.opts = {s: [], l: []};
-  this.options    = {};
-  this.args       = [];
-  this.invalids   = [];
+  this._valopts    = {s: [], l: []};
+  this._opts = {s: [], l: []};
+  this._options    = {};
+  this._args       = [];
+  this._invalids   = [];
   this._defaults = {};
 
   this.emptyValue = false;
@@ -19,32 +19,37 @@ ArgParser.create = function() {
 // get options ( getOptions("s") ...
 ArgParser.prototype.getOptions  = function() {
   if (arguments.length == 0) {
-    return this.options;
+    return this._options;
   }
   var ret = null;
   const that = this;
   Array.prototype.forEach.call(arguments, function(arg) {
-    ret = ret || that.options[arg];
+    ret = ret || that._options[arg];
   });
   return ret;
 };
+// syntax sugar
+ArgParser.prototype.opt = ArgParser.prototype.getOptions;
+
 
 // get arguments getArgs(0), getArgs(1) ...
 ArgParser.prototype.getArgs = function(n) {
-  return (n == null) ? this.args: this.args[n];
+  return (n == null) ? this._args: this._args[n];
 };
+// syntax sugar
+ArgParser.prototype.arg = ArgParser.prototype.getArgs;
 
 // stringify current options
 ArgParser.prototype.stringifyOptions = function() {
   var that = this;
-  return ['opts', 'valopts'].map(function(opts) {
+  return ['_opts', '_valopts'].map(function(opts) {
     return Object.keys(that[opts]).map(function(sl) {
       return that[opts][sl]
       .filter(function(k) {
-        return (that.options[k] !== false);
+        return (that._options[k] !== false);
       })
       .map(function(k) {
-        return (( (sl == 's') ? '-'+k : '--'+k ) + ( (opts == 'opts') ? '' : (' ' + that.options[k]))).replace(/ +$/, '');
+        return (( (sl == 's') ? '-'+k : '--'+k ) + ( (opts == '_opts') ? '' : (' ' + that._options[k]))).replace(/ +$/, '');
       }).join(' ');
     }).join(' ').replace(/ +$/, '');
   }).join(' ').replace(/ +$/, '');
@@ -52,23 +57,27 @@ ArgParser.prototype.stringifyOptions = function() {
 
 // stringify current options and args
 ArgParser.prototype.stringify = function() {
-  return this.stringifyOptions() + ' ' + this.args.join(' ');
+  return this.stringifyOptions() + ' ' + this._args.join(' ');
 };
 
 // get invalid options given
 ArgParser.prototype.getInvalids = function(n) {
-  return (n == null) ? this.invalids : this.invalids[n];
+  return (n == null) ? this._invalids : this._invalids[n];
 };
+
+ArgParser.prototype.invalids = function() { return this._invalids };
 
 
 // set options which requires a value
 ArgParser.prototype.addValueOptions = function() {
   var arr = (Array.isArray(arguments[0])) ? arguments[0] : Array.prototype.slice.call(arguments);
   arr.forEach(function(opt) {
-    this.valopts[(opt.length == 1) ? 's' : 'l'].push(opt);
+    this._valopts[(opt.length == 1) ? 's' : 'l'].push(opt);
   }, this);
   return this;
 };
+// syntax sugar
+ArgParser.prototype.vals = ArgParser.prototype.addValueOptions;
 
 
 // set args | options which requires (a file | a directory | a number)
@@ -107,17 +116,20 @@ ArgParser.prototype.defaults = function(obj, noSetNums) {
 ArgParser.prototype.addOptions = function() {
   var arr = (Array.isArray(arguments[0])) ? arguments[0] : Array.prototype.slice.call(arguments);
   arr.forEach(function(opt) {
-    this.opts[(opt.length == 1) ? 's' : 'l'].push(opt);
+    this._opts[(opt.length == 1) ? 's' : 'l'].push(opt);
   }, this);
   return this;
 };
 
+// syntax sugar
+ArgParser.prototype.nonvals = ArgParser.prototype.addOptions;
+
 // parse argv
 ArgParser.prototype.parse = function(arr) {
   /* clear past data */
-  this.options  = {};
-  this.args     = [];
-  this.invalids = [];
+  this._options  = {};
+  this._args     = [];
+  this._invalids = [];
 
   /* check arguments */
   if (! (arr instanceof Array)) {
@@ -129,10 +141,10 @@ ArgParser.prototype.parse = function(arr) {
 
   /* set default values */
   var that = this; // for shortcut access to this
-  ['opts', 'valopts'].forEach(function(opts) {
+  ['_opts', '_valopts'].forEach(function(opts) {
     ['s', 'l'].forEach(function(sl) {
       that[opts][sl].forEach(function(opt) {
-        that.options[opt] = (that._defaults[opt] != undefined) ? that._defaults[opt] : that.emptyValue;
+        that._options[opt] = (that._defaults[opt] != undefined) ? that._defaults[opt] : that.emptyValue;
       });
     });
   });
@@ -143,7 +155,7 @@ ArgParser.prototype.parse = function(arr) {
   arr.forEach(function(val) {
     /* if option with value is set */
     if (vopt) {
-      that.options[vopt] = val;
+      that._options[vopt] = val;
       vopt = null;
       return;
     }
@@ -151,17 +163,17 @@ ArgParser.prototype.parse = function(arr) {
     /* short option parsing */
     if (val.match(/^-[a-zA-Z0-9_]$/)) {
       var optname = val.charAt(1);
-      if (that.valopts.s.indexOf(optname) >= 0) {
+      if (that._valopts.s.indexOf(optname) >= 0) {
         vopt = optname;
         return;
       }
-      else if (that.opts.s.indexOf(optname) >= 0) {
-        that.options[optname] = true;
+      else if (that._opts.s.indexOf(optname) >= 0) {
+        that._options[optname] = true;
         return;
       }
       else { // invalid option
-        that.options[optname] = true;
-        that.invalids.push(optname);
+        that._options[optname] = true;
+        that._invalids.push(optname);
         return;
       }
     }
@@ -169,23 +181,23 @@ ArgParser.prototype.parse = function(arr) {
     /* long option parsing */
     if (val.match(/^--[a-zA-Z0-9_-]+$/)) {
       var optname = val.slice(2);
-      if (that.valopts.l.indexOf(optname) >= 0) {
+      if (that._valopts.l.indexOf(optname) >= 0) {
         vopt = optname;
         return;
       }
-      else if (that.opts.l.indexOf(optname) >= 0) {
-        that.options[optname] = true;
+      else if (that._opts.l.indexOf(optname) >= 0) {
+        that._options[optname] = true;
         return;
       }
       else {
-        that.options[optname] = true;
-        that.invalids.push(optname);
+        that._options[optname] = true;
+        that._invalids.push(optname);
         return;
       }
     }
 
     /* arguments */
-    that.args.push(val);
+    that._args.push(val);
   });
 
   var path = require('path'), fs = require('fs');
@@ -210,8 +222,8 @@ ArgParser.prototype.parse = function(arr) {
     if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
     var num = Number( (typeof v == "number") ? this.getArgs(v) : this.getOptions(v) );
     if (isNaN(num)) throw new Error('the arg ' + v +' must be a number.');
-    if (typeof v == "number") this.args[v] = num;
-    else                      this.options[v] = num;
+    if (typeof v == "number") this._args[v] = num;
+    else                      this._options[v] = num;
   }, this);
   return this;
 };
@@ -236,8 +248,5 @@ Object.keys(ArgParser.prototype).forEach(function(methodName) {
     return ap;
   };
 });
-
-/* version */
-ArgParser.version = '0.1.3';
 
 module.exports = ArgParser;
