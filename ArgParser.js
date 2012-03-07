@@ -10,6 +10,9 @@ function ArgParser() {
   this._files = [];
   this._dirs  = [];
   this._nums  = [];
+  this._err   = null;
+  this._min   = null;
+  this._max   = null;
 }
 
 ArgParser.create = function() {
@@ -124,6 +127,21 @@ ArgParser.prototype.addOptions = function() {
 // syntax sugar
 ArgParser.prototype.nonvals = ArgParser.prototype.addOptions;
 
+// register function called after error (in parsing)
+ArgParser.prototype.err = function(err) {
+  if (typeof err == "function") this._err = err;
+  return this;
+};
+
+
+// register argument nums
+ArgParser.prototype.arglen = function(min, max) {
+  if (typeof min == "number") this._min = min;
+  if (typeof max == "number") this._max = max;
+  return this;
+};
+
+
 // parse argv
 ArgParser.prototype.parse = function(arr) {
   /* clear past data */
@@ -202,29 +220,45 @@ ArgParser.prototype.parse = function(arr) {
 
   var path = require('path'), fs = require('fs');
 
-  // check file existence
-  this._files.forEach(function(v) {
-    if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
-    var f = (typeof v == "number") ? this.getArgs(v) : this.getOptions(v);
-    if (f == '-') return;
-    try{if(!fs.statSync(f).isFile()){throw 1}}catch(e){throw new Error(f + ": no such file or directory (in args " + v + ')');}
-  }, this);
-  
-  // check dir existence
-  this._dirs.forEach(function(v) {
-    if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
-    var d = (typeof v == "number") ? this.getArgs(v) : this.getOptions(v);
-    try{if(!fs.statSync(d).isDirectory()){throw 1}}catch(e){throw new Error(d + ": no such file or directory (in args " + v + ')');}
-  }, this);
+  try {
 
-  // Numberize
-  this._nums.forEach(function(v) {
-    if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
-    var num = Number( (typeof v == "number") ? this.getArgs(v) : this.getOptions(v) );
-    if (isNaN(num)) throw new Error('the arg ' + v +' must be a number.');
-    if (typeof v == "number") this._args[v] = num;
-    else                      this._options[v] = num;
-  }, this);
+    // check file existence
+    this._files.forEach(function(v) {
+      if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
+      var f = (typeof v == "number") ? this.getArgs(v) : this.getOptions(v);
+      if (f == '-') return;
+      try{if(!fs.statSync(f).isFile()){throw 1}}catch(e){throw new Error(f + ": no such file or directory (in args " + v + ')');}
+    }, this);
+    
+    // check dir existence
+    this._dirs.forEach(function(v) {
+      if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
+      var d = (typeof v == "number") ? this.getArgs(v) : this.getOptions(v);
+      try{if(!fs.statSync(d).isDirectory()){throw 1}}catch(e){throw new Error(d + ": no such file or directory (in args " + v + ')');}
+    }, this);
+
+    // Numberize
+    this._nums.forEach(function(v) {
+      if (typeof v == "string" && this.getOptions(v) === this.emptyValue) return;
+      var num = Number( (typeof v == "number") ? this.getArgs(v) : this.getOptions(v) );
+      if (isNaN(num)) throw new Error('the arg ' + v +' must be a number.');
+      if (typeof v == "number") this._args[v] = num;
+      else                      this._options[v] = num;
+    }, this);
+
+    // check argument length
+    if (this._min != null && this._min > this._args.length)
+      throw new Error('required at least ' + this._min + ' argument(s)'); 
+
+    if (this._max != null && this._max < this._args.length)
+      throw new Error('required at most ' + this._max + ' argument(s)'); 
+  }
+  catch (e) {
+    if (!this._err) throw e;
+    var ret = this._err(e);
+    return (ret == undefined) ? false : ret;
+  }
+
   return this;
 };
 

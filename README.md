@@ -36,6 +36,8 @@ in script.js
 - ap.dirs()
 - ap.nums()
 - ap.defaults()
+- ap.err()
+- ap.arglen()
 - ap.parse(arr)
 - ap.opt(op1, op2, ...)
 - ap.arg()
@@ -186,6 +188,41 @@ in script.js
 If **noSetNums** is true, **ap.nums()** is not called to options
 whose default value is number.
 By default, **ap.nums()** are called to these options automatically.
+
+
+### ap.err(fn) ###
+Registers a function called when an error is thrown in parsing.
+
+The argument passed to **fn** is the thrown error.
+
+Return value of the function is the return value of **ap.parse()**.
+
+By default, it returns **false**.
+
+    var ap = require('argparser')
+             .files(0)
+             .err(function(e) {
+               console.error(e.message)
+               console.error("[usage]\n\tnode", __filename, "<file>")
+             })
+             .parse();
+
+    if (!ap) process.exit();
+
+
+### ap.arglen(min, max) ###
+Registers a limit of argument length.
+
+ArgParser throws an error if **min** is larger than arguments.length.
+
+ArgParser throws an error if **max** is smaller than arguments.length.
+
+We can set just **min** like the following sample.
+
+    var ap = require('argparser')
+             .arglen(3) // three arguments are required
+             .parse();
+
 
 
 ### ap.parse(arr) ###
