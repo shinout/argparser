@@ -117,6 +117,13 @@ test("strictEqual", parser.opt("hoge"), 14);
 parser.parse(["--hoge", "13"]);
 test("strictEqual", parser.opt("hoge"), 13);
 test('result', 'default test');
+try {
+  parser = ArgParser.nonvals("s").defaults({ "s" : 14 });
+  test("ng");
+}
+catch (e) {
+  test("ok", e.message.match("cannot have default"));
+}
 
 
 // ap shortcut creating

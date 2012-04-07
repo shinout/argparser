@@ -105,6 +105,11 @@ ArgParser.prototype.defaults = function(obj, noSetNums) {
   var nums = [];
   keys.forEach(function(k) {
     var val = obj[k];
+    var s_l = (k.length == 1) ? 's' : 'l';
+    if (this._opts[s_l].indexOf(k) >= 0) {
+      throw new Error("nonvals options cannot have default value.");
+    }
+
     if (typeof val == "number") nums.push(k);
     this._defaults[k] = val;
   }, this);
